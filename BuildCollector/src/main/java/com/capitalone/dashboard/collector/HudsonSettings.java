@@ -13,6 +13,9 @@ import java.util.List;
 public class HudsonSettings {
     
 
+    private String username;
+    private String apiKey;
+
     private String cron;
     private boolean saveLog = false;
     private List<String> servers;
@@ -39,5 +42,21 @@ public class HudsonSettings {
 
     public void setServers(List<String> servers) {
         this.servers = servers;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }
