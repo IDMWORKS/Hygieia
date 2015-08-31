@@ -46,3 +46,8 @@ src/**/*.css
 #src/index.html
 /bin
 /target/
+
+# Misc added by Mike
+node
+
+
