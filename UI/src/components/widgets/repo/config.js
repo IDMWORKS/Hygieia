@@ -19,6 +19,9 @@
 		}, {
 			name: 'Subversion',
 			value: 'Subversion'
+        }, {
+            name: 'Bitbucket',
+            value: 'Bitbucket'
 		}];
 
 console.log(JSON.stringify(widgetConfig)); //"{"options":{"id":"repo0"}}"
@@ -40,7 +43,7 @@ console.log(JSON.stringify(widgetConfig)); //"{"options":{"id":"repo0"}}"
 		}
 
 
-		ctrl.gitBranch = widgetConfig.options.branch;
+		ctrl.branch = widgetConfig.options.branch;
 		ctrl.username = "";
 		ctrl.password = "";
 
@@ -71,7 +74,7 @@ console.log(JSON.stringify(widgetConfig)); //"{"options":{"id":"repo0"}}"
 			ctrl.submitted = true;
 			if (valid && ctrl.collectors.length) {
 				if (repoType == 'GitHub (public)') {
-					createCollectorItem(url, repoType, ctrl.gitBranch).then(
+					createCollectorItem(url, repoType.name, ctrl.branch).then(
 							processCollectorItemResponse);
 				} else if (repoType == 'GitHub (private)') {
 					var httpReplace = ("http://").concat(ctrl.username).concat(
@@ -80,10 +83,10 @@ console.log(JSON.stringify(widgetConfig)); //"{"options":{"id":"repo0"}}"
 							.concat(":").concat(ctrl.password).concat("@");
 					var url2 = url.replace("http://", httpReplace);
 					var url3 = url2.replace("https://", httpsReplace);
-					createCollectorItem(url3, repoType, ctrl.gitBranch).then(
+					createCollectorItem(url3, repoType, ctrl.branch).then(
 							processCollectorItemResponse);
 				} else {
-					createCollectorItem(url, repoType.name, ctrl.gitBranch).then(
+					createCollectorItem(url, repoType.name, ctrl.branch).then(
 							processCollectorItemResponse);
 				}
 			}
@@ -110,6 +113,15 @@ console.log(JSON.stringify(widgetConfig)); //"{"options":{"id":"repo0"}}"
 						branch: branch
 					}
 				};
+            } else if (repoTypeName.indexOf("Bitbucket") != -1) {
+                item = {
+                    collectorId: _.findWhere(ctrl.collectors, {name: 'Bitbucket'}).id,
+                    options: {
+                        scm: 'Bitbucket',
+                        url: url,
+                        branch: branch
+                    }
+                };
 			} else {
 				console.log(repoTypeName);
 				item = {
@@ -130,7 +142,7 @@ console.log(JSON.stringify(widgetConfig)); //"{"options":{"id":"repo0"}}"
 					id : widgetConfig.options.id,
 					scm : ctrl.repoOption,
 					url : ctrl.repoUrl,
-					branch : ctrl.gitBranch
+					branch : ctrl.branch
 				},
 				componentId : modalData.dashboard.application.components[0].id,
 				collectorItemId : response.data.id
